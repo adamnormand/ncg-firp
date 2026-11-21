@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 58" role="img" aria-label="Firma Plus">
+  <g>
+    <rect x="2" y="9" width="9" height="40" fill="#16284a"/>
+    <rect x="2" y="9" width="22" height="9" fill="#16284a"/>
+    <rect x="2" y="25" width="17" height="8" fill="#16284a"/>
+    <rect x="45" y="9" width="9" height="40" fill="#2a6bb8"/>
+    <rect x="32" y="9" width="22" height="9" fill="#2a6bb8"/>
+    <rect x="37" y="25" width="17" height="8" fill="#2a6bb8"/>
+    <rect x="22" y="40" width="12" height="9" fill="#3d8fdd"/>
+  </g>
+  <text x="64" y="44" font-family="Poppins, Arial, sans-serif" font-size="38" font-weight="600" fill="#16284a" letter-spacing="-1">Firma</text>
+  <text x="172" y="44" font-family="Poppins, Arial, sans-serif" font-size="38" font-weight="500" fill="#2a6bb8" letter-spacing="-1">plus</text>
+</svg>
