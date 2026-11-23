@@ -12,7 +12,7 @@ SITE = {
 
 OFFICES = [
     {
-        "slug": "montreal-saguenay",
+        "slug": "montreal-saguenay", "img": "montreal-soir",
         "name": "Montréal / Saguenay",
         "entity": "Cabinet Firma Plus CPA Inc.",
         "phones": [("Montréal", "438-817-0057", "+14388170057"), ("Saguenay (Jonquière)", "581-705-4344", "+15817054344")],
@@ -21,7 +21,7 @@ OFFICES = [
         "blurb": "Notre équipe d’origine, qui dessert les PME de la grande région de Montréal et du Saguenay–Lac-Saint-Jean, en personne ou à distance.",
     },
     {
-        "slug": "saint-eustache",
+        "slug": "saint-eustache", "img": "equipe-bureau",
         "name": "Saint-Eustache (Rive-Nord)",
         "entity": "Cabinet Firma Plus Rive-Nord S.E.N.C.R.L.",
         "phones": [("Saint-Eustache", "450-472-2828", "+14504722828")],
@@ -34,7 +34,7 @@ OFFICES = [
 # ---------------------------------------------------------------- SERVICES
 SERVICES = [
     {
-        "slug": "tenue-de-livres",
+        "slug": "tenue-de-livres", "img": "calculatrice",
         "icon": "book",
         "title": "Tenue de livres",
         "short": "Payables, recevables, remises gouvernementales et états financiers internes, à la fréquence qui vous convient.",
@@ -54,7 +54,7 @@ SERVICES = [
         ],
     },
     {
-        "slug": "service-de-paie",
+        "slug": "service-de-paie", "img": "paie",
         "icon": "users",
         "title": "Service de paie",
         "short": "L’administration complète de la paie de vos employés, sans erreur et dans les délais.",
@@ -73,7 +73,7 @@ SERVICES = [
         ],
     },
     {
-        "slug": "budget-et-previsions",
+        "slug": "budget-et-previsions", "img": "graphiques",
         "icon": "chart",
         "title": "Budget et prévisions financières",
         "short": "Des budgets réalistes et des prévisions fiables pour décider en connaissance de cause.",
@@ -92,7 +92,7 @@ SERVICES = [
         ],
     },
     {
-        "slug": "directeur-financier-fractionne",
+        "slug": "directeur-financier-fractionne", "img": "conseil-table",
         "icon": "compass",
         "title": "Directeur financier fractionné",
         "short": "Un CFO à la demande : l’expertise d’un directeur financier, sans l’embauche à temps plein.",
@@ -111,7 +111,7 @@ SERVICES = [
         ],
     },
     {
-        "slug": "accompagnement-debourses-bancaires",
+        "slug": "accompagnement-debourses-bancaires", "img": "signature",
         "icon": "bank",
         "title": "Accompagnement lors de déboursés bancaires",
         "short": "Des dossiers de financement et de déboursés complets, prêts pour votre banque et votre consultant en coûts.",
@@ -130,7 +130,7 @@ SERVICES = [
         ],
     },
     {
-        "slug": "impots-et-autres-services",
+        "slug": "impots-et-autres-services", "img": "analyse",
         "icon": "doc",
         "title": "Impôts et autres services",
         "short": "Impôts, rattrapage comptable, états financiers et services-conseils, adaptés à vos besoins.",
@@ -153,7 +153,7 @@ SERVICES = [
 # NOTE: secteurs proposés à partir des services actuels — à valider avec Firma Plus.
 SECTORS = [
     {
-        "slug": "construction",
+        "slug": "construction", "img": "construction",
         "icon": "crane",
         "title": "Construction et entrepreneurs",
         "short": "Comptabilité par projet, dossiers de déboursés et suivi des retenues contractuelles.",
@@ -161,7 +161,7 @@ SECTORS = [
         "services": ["accompagnement-debourses-bancaires", "tenue-de-livres", "budget-et-previsions"],
     },
     {
-        "slug": "immobilier",
+        "slug": "immobilier", "img": "immobilier",
         "icon": "building",
         "title": "Immobilier",
         "short": "Immeubles locatifs, promotion et sociétés de portefeuille : des livres clairs, entité par entité.",
@@ -169,7 +169,7 @@ SECTORS = [
         "services": ["tenue-de-livres", "accompagnement-debourses-bancaires", "impots-et-autres-services"],
     },
     {
-        "slug": "commerce-et-distribution",
+        "slug": "commerce-et-distribution", "img": "commerce",
         "icon": "cart",
         "title": "Commerce de détail et distribution",
         "short": "Inventaire, marges et taxes de vente : la rentabilité, ligne par ligne.",
@@ -177,7 +177,7 @@ SECTORS = [
         "services": ["tenue-de-livres", "budget-et-previsions", "service-de-paie"],
     },
     {
-        "slug": "services-professionnels",
+        "slug": "services-professionnels", "img": "services-pro",
         "icon": "brief",
         "title": "Services professionnels",
         "short": "Cabinets, agences et consultants : recevables, temps facturable et rémunération des associés.",
@@ -185,7 +185,7 @@ SECTORS = [
         "services": ["tenue-de-livres", "directeur-financier-fractionne", "service-de-paie"],
     },
     {
-        "slug": "manufacturier",
+        "slug": "manufacturier", "img": "manufacturier",
         "icon": "gear",
         "title": "Manufacturier et industriel",
         "short": "Prix de revient, investissements en équipement et financement de la croissance.",
@@ -193,7 +193,7 @@ SECTORS = [
         "services": ["budget-et-previsions", "directeur-financier-fractionne", "accompagnement-debourses-bancaires"],
     },
     {
-        "slug": "entreprises-en-croissance",
+        "slug": "entreprises-en-croissance", "img": "demarrage",
         "icon": "rocket",
         "title": "Démarrage et entreprises en croissance",
         "short": "Mettre en place les bonnes bases tôt, puis suivre le rythme de la croissance.",
@@ -247,7 +247,7 @@ STAFF = [
 # ---------------------------------------------------------------- INSIGHTS
 ARTICLES = [
     {
-        "slug": "t4-releve-1-preparer-fin-annee",
+        "slug": "t4-releve-1-preparer-fin-annee", "img": "paie",
         "date": "2026-11-18", "cat": "Paie", "read": 4,
         "title": "T4 et Relevé 1 : préparer la fin d’année de paie dès novembre",
         "excerpt": "Les feuillets doivent être remis aux employés et transmis aux gouvernements au plus tard le dernier jour de février. Le travail se gagne en novembre.",
@@ -268,7 +268,7 @@ ARTICLES = [
 """,
     },
     {
-        "slug": "tps-tvq-erreurs-frequentes",
+        "slug": "tps-tvq-erreurs-frequentes", "img": "calculatrice",
         "date": "2026-11-04", "cat": "Fiscalité", "read": 5,
         "title": "TPS et TVQ : cinq erreurs fréquentes dans les déclarations des PME",
         "excerpt": "Taxes de 5 % et de 9,975 %, crédits de taxe sur les intrants, seuil du petit fournisseur : là où les PME se trompent le plus souvent.",
@@ -288,7 +288,7 @@ ARTICLES = [
 """,
     },
     {
-        "slug": "directeur-financier-fractionne-quand",
+        "slug": "directeur-financier-fractionne-quand", "img": "conseil-table",
         "date": "2026-10-21", "cat": "Gestion", "read": 4,
         "title": "Directeur financier fractionné : cinq signes que votre PME en a besoin",
         "excerpt": "Entre le technicien comptable et le CFO à temps plein, il existe une étape. Voici comment savoir si vous y êtes.",
@@ -308,7 +308,7 @@ ARTICLES = [
 """,
     },
     {
-        "slug": "dossier-debourses-construction",
+        "slug": "dossier-debourses-construction", "img": "architecte",
         "date": "2026-10-07", "cat": "Financement", "read": 5,
         "title": "Projets de construction : monter un dossier de déboursés qui passe du premier coup",
         "excerpt": "Le consultant en coûts recommande, la banque débourse. Entre les deux, la qualité de votre dossier fixe le délai.",
@@ -330,7 +330,7 @@ ARTICLES = [
 """,
     },
     {
-        "slug": "rattrapage-comptable-par-ou-commencer",
+        "slug": "rattrapage-comptable-par-ou-commencer", "img": "analyse",
         "date": "2026-09-23", "cat": "Comptabilité", "read": 4,
         "title": "Rattrapage comptable : par où commencer quand les livres ont pris du retard",
         "excerpt": "Six mois, un an, plus ? Le retard se rattrape. L’ordre dans lequel on s’y prend fait toute la différence.",
@@ -350,7 +350,7 @@ ARTICLES = [
 """,
     },
     {
-        "slug": "budget-annuel-pme-methode",
+        "slug": "budget-annuel-pme-methode", "img": "graphiques",
         "date": "2026-09-09", "cat": "Gestion", "read": 4,
         "title": "Budget annuel : une méthode simple pour les PME",
         "excerpt": "Un budget utile tient sur une page, part des ventes et se compare au réel chaque mois.",

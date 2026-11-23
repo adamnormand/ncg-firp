@@ -132,7 +132,7 @@ def page(path, title, desc, body, active="", schema=""):
     BUILT.append(path)
 
 def hero(kicker, h1, lead, ctas="", crumbs="", small=True, extra="", img=""):
-    style = f' style="--hero-img:url({img})"' if img else ""
+    style = f' style="background-image:url({img})"' if img else ""
     return f'''<section class="hero{" small" if small else ""}"{style}><div class="wrap">
 {f'<div class="crumbs">{crumbs}</div>' if crumbs else ""}<span class="kicker">{kicker}</span>
 <h1>{h1}</h1>{f'<p class="lead">{lead}</p>' if lead else ""}{f'<div class="ctas">{ctas}</div>' if ctas else ""}{extra}
@@ -174,14 +174,20 @@ def cta_band(title="Prêt à déléguer votre comptabilité ?", text="Une premi�
 <div class="ctas" style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-ghost" href="{{root}}contact/">Nous joindre</a><a class="btn" style="background:#fff;color:var(--navy)" href="{{root}}devenir-client/">Devenir client</a></div>
 </div></div></section>'''
 
+def photo(name, alt=""):
+    return f'<img src="{{root}}assets/img/photos/{name}.jpg" alt="{esc(alt)}" loading="lazy">'
+
+def media_card(href, s, more):
+    return f'<a class="card media reveal" href="{href}"><div class="thumb">{photo(s["img"], s["title"])}</div><div class="cb">{icon(s["icon"])}<h3>{s["title"]}</h3><p>{s["short"]}</p><span class="more">{more} →</span></div></a>'
+
 def svc_card(s, r="{root}"):
-    return f'<a class="card reveal" href="{r}services/{s["slug"]}/">{icon(s["icon"])}<h3>{s["title"]}</h3><p>{s["short"]}</p><span class="more">En savoir plus →</span></a>'
+    return media_card(f'{r}services/{s["slug"]}/', s, "En savoir plus")
 
 def sec_card(s):
-    return f'<a class="card reveal" href="{{root}}secteurs/{s["slug"]}/">{icon(s["icon"])}<h3>{s["title"]}</h3><p>{s["short"]}</p><span class="more">Voir le secteur →</span></a>'
+    return media_card(f'{{root}}secteurs/{s["slug"]}/', s, "Voir le secteur")
 
 def post_card(a):
-    return f'''<a class="card post reveal" href="{{root}}perspectives/{a["slug"]}/"><div class="cover">{a["cat"]}</div>
+    return f'''<a class="card post reveal" href="{{root}}perspectives/{a["slug"]}/"><div class="cover" style="background-image:url({{root}}assets/img/photos/{a["img"]}.jpg)"><span>{a["cat"]}</span></div>
 <div class="meta"><span class="chip">{a["cat"]}</span><time datetime="{a["date"]}">{a["date"]}</time><span>{a["read"]} min</span></div>
 <h3>{a["title"]}</h3><p>{a["excerpt"]}</p><span class="more">Lire →</span></a>'''
 
@@ -194,14 +200,15 @@ def member_card(name, cred, role, office, bio="", compact=False):
 def office_card(o):
     phones = "".join(f'<dt>{p[0]}</dt><dd><a href="tel:{p[2]}">{p[1]}</a></dd>' for p in o["phones"])
     addr = f'<dt>Adresse</dt><dd>{o["address"]}</dd>' if o["address"] else ""
-    return f'''<div class="card office reveal">{icon("pin")}<h3>{o["name"]}</h3><span class="muted" style="font-size:.85rem">{o["entity"]}</span>
+    return f'''<div class="card office media reveal"><div class="thumb">{photo(o["img"], o["name"])}</div><div class="cb">{icon("pin")}<h3>{o["name"]}</h3><span class="muted" style="font-size:.85rem">{o["entity"]}</span>
 <p style="margin-top:10px">{o["blurb"]}</p>
 <dl>{phones}<dt>Courriel</dt><dd><a href="mailto:{o["email"]}">{o["email"]}</a></dd>{addr}</dl>
-<span class="more"><a href="{{root}}bureaux/{o["slug"]}/">Voir le bureau et l’équipe →</a></span></div>'''
+<span class="more"><a href="{{root}}bureaux/{o["slug"]}/">Voir le bureau et l’équipe →</a></span></div></div>'''
 
 ORG_SCHEMA = '''<script type="application/ld+json">{"@context":"https://schema.org","@type":"AccountingService","name":"Firma Plus","url":"https://firmaplus.ca/","email":"cpa@firmaplus.ca","telephone":"+1-438-817-0057","areaServed":"Québec","sameAs":["https://www.facebook.com/Firmacompta","https://www.linkedin.com/company/firmagestion/"],"department":[{"@type":"AccountingService","name":"Cabinet Firma Plus CPA Inc.","telephone":"+1-438-817-0057"},{"@type":"AccountingService","name":"Cabinet Firma Plus Rive-Nord S.E.N.C.R.L.","telephone":"+1-450-472-2828","address":{"@type":"PostalAddress","streetAddress":"450, rue du Parc, bureau 113","addressLocality":"Saint-Eustache","addressRegion":"QC","postalCode":"J7R 7G6","addressCountry":"CA"}}]}</script>'''
 
 N_PEOPLE = len(PARTNERS) + len(STAFF)
+P = "{root}assets/img/photos/"
 
 # ------------------------------------------------------------------ HOME
 def build_home():
@@ -213,17 +220,23 @@ def build_home():
     body = hero("Services comptables pour PME", "Vous êtes entrepreneurs.<br>Nous sommes comptables.",
         "Tenue de livres, paie, prévisions financières, directeur financier fractionné et dossiers de financement : une équipe de CPA et de techniciens qui vous libère de l’administratif pour que vous vous concentriez sur la croissance.",
         '<a class="btn btn-primary" href="{root}devenir-client/">Devenir client</a><a class="btn btn-ghost" href="{root}contact/">Planifier une consultation</a>',
-        small=False, img="{root}assets/img/hero.jpg",
+        small=False, img="{root}assets/img/photos/hero-montreal.jpg",
         extra='<div class="tags" style="margin-top:28px"><span>CPA</span><span>Tenue de livres</span><span>Paie</span><span>CFO à la demande</span><span>Déboursés bancaires</span><span>Impôts</span></div>' + stats)
-    body += f'''<section><div class="wrap">
+    body += f'''<section><div class="wrap split" style="align-items:center">
+<div class="reveal"><span class="kicker">Notre équipe est là pour vous</span><h2>Une firme québécoise au service des PME</h2>
+<p class="muted" style="margin-top:16px;font-size:1.05rem">Notre équipe de professionnels vous accompagne avec des solutions comptables personnalisées, innovantes et de haute qualité. Rapides, efficaces et toujours à l’écoute, nous mettons notre savoir-faire au service des PME de Montréal, du Saguenay et de la Rive-Nord pour assurer une gestion financière optimale.</p>
+<div class="ctas" style="display:flex;gap:12px;margin-top:26px;flex-wrap:wrap"><a class="btn btn-primary" href="{{root}}equipe/">Découvrez nos experts</a><a class="btn btn-outline" href="{{root}}a-propos/">À propos</a></div></div>
+<div class="photo wide reveal">{photo("conseil-table", "Rencontre entre une comptable de Firma Plus et des dirigeants de PME")}<div class="badge"><b>{N_PEOPLE}</b>professionnels dans 3 points de service</div></div>
+</div></section>
+<section class="alt"><div class="wrap">
 <div class="head"><span class="kicker">Nos services</span><h2>Des services personnalisables selon vos besoins</h2>
 <p>De la gestion de vos livres à l’accompagnement de vos demandes de financement, notre équipe vous soutient à chaque étape. Vous choisissez la fréquence et l’étendue du mandat.</p></div>
 <div class="grid g3">{"".join(svc_card(s) for s in SERVICES)}</div></div></section>'''
-    body += f'''<section class="alt"><div class="wrap">
+    body += f'''<section><div class="wrap">
 <div class="head"><span class="kicker">Secteurs</span><h2>Nous connaissons votre réalité</h2>
 <p>Chaque secteur a ses enjeux comptables. Nous adaptons nos méthodes, nos rapports et nos échéanciers à la façon dont votre entreprise gagne son argent.</p></div>
 <div class="grid g3">{"".join(sec_card(s) for s in SECTORS)}</div></div></section>'''
-    body += '''<section class="dark"><div class="wrap">
+    body += '''<section class="dark band" style="background-image:url({root}assets/img/photos/equipe-reunion.jpg)"><div class="wrap">
 <div class="head"><span class="kicker" style="color:#8ec2f5">Notre façon de travailler</span><h2>Simple à démarrer, rigoureux à chaque mois</h2></div>
 <div class="steps">
 <div class="step reveal"><h3>Consultation</h3><p>Nous faisons le point sur vos livres, vos échéances et vos objectifs. Sans engagement.</p></div>
@@ -245,9 +258,9 @@ def build_home():
 <div class="panel sticky reveal">{callback_form()}</div>
 </div></section>'''
     body += f'''<section class="alt"><div class="wrap">
-<div class="head"><span class="kicker">Notre équipe</span><h2>Des associés engagés, une équipe de {N_PEOPLE} professionnels</h2>
+<div class="head"><span class="kicker">Nos associés</span><h2>Des associés engagés, une équipe de {N_PEOPLE} professionnels</h2>
 <p>CPA, techniciens comptables, spécialistes de la certification et de la paie : une équipe complète, répartie dans nos bureaux de Montréal, du Saguenay et de Saint-Eustache.</p></div>
-<div class="team">{"".join(member_card(p["name"], p["cred"], p["role"], p["office"]) for p in PARTNERS[:4])}</div>
+<div class="team five">{"".join(member_card(p["name"], p["cred"], p["role"], p["office"]) for p in PARTNERS)}</div>
 <p style="margin-top:28px"><a class="btn btn-outline" href="{{root}}equipe/">Découvrez nos experts</a></p>
 </div></section>'''
     body += f'''<section><div class="wrap">
@@ -265,7 +278,7 @@ def build_services():
     body = hero("Nos services", "Des services comptables complets pour PME",
         "De la gestion de vos livres à l’accompagnement de vos besoins de financement, notre équipe de spécialistes vous soutient à chaque étape.",
         '<a class="btn btn-primary" href="{root}devenir-client/">Devenir client</a><a class="btn btn-ghost" href="{root}contact/">Planifier une consultation</a>',
-        crumbs(("Accueil", "{root}"), ("Services", "")))
+        crumbs(("Accueil", "{root}"), ("Services", "")), img=P+"equipe-reunion.jpg")
     body += f'<section><div class="wrap"><div class="grid g3">{"".join(svc_card(s) for s in SERVICES)}</div></div></section>'
     body += '''<section class="alt"><div class="wrap split"><div class="reveal"><span class="kicker">Forfaits sur mesure</span><h2>Vous choisissez l’étendue du mandat</h2>
 <p class="muted" style="margin-top:14px">Chaque service peut être retenu seul ou combiné aux autres. La plupart de nos clients commencent par la tenue de livres et la paie, puis ajoutent les prévisions ou le directeur financier fractionné à mesure que l’entreprise grandit.</p>
@@ -281,7 +294,7 @@ def build_services():
         schema = '<script type="application/ld+json">' + __import__("json").dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in s["faq"]]}, ensure_ascii=False) + '</script>'
         body = hero("Service", s["title"], s["short"],
             f'<a class="btn btn-primary" href="{{root}}devenir-client/?service={s["slug"]}">Démarrer</a><a class="btn btn-ghost" href="#rappel">Être rappelé</a>',
-            crumbs(("Accueil", "{root}"), ("Services", "{root}services/"), (s["title"], "")))
+            crumbs(("Accueil", "{root}"), ("Services", "{root}services/"), (s["title"], "")), img=P+s["img"]+".jpg")
         body += f'''<section><div class="wrap split">
 <div class="prose reveal"><p style="font-size:1.1rem">{s["intro"]}</p>
 <h2>Ce que nous faisons pour vous</h2><ul class="check">{"".join(f"<li>{b}</li>" for b in s["bullets"])}</ul>
@@ -290,7 +303,7 @@ def build_services():
 <h2>Questions fréquentes</h2>{faq}
 {f'<h2>Secteurs où ce service fait la différence</h2><p>' + " · ".join(f'<a href="{{root}}secteurs/{x["slug"]}/">{x["title"]}</a>' for x in secs) + '</p>' if secs else ""}
 </div>
-<div class="panel sticky reveal" id="rappel">{callback_form(s["slug"])}</div>
+<div class="sticky" style="position:sticky;top:110px"><div class="photo wide reveal" style="margin-bottom:22px">{photo(s["img"], s["title"])}</div><div class="panel reveal" id="rappel">{callback_form(s["slug"])}</div></div>
 </div></section>
 <section class="alt"><div class="wrap"><div class="head"><span class="kicker">Aussi</span><h2>Services complémentaires</h2></div>
 <div class="grid g3">{"".join(svc_card(o) for o in others)}</div></div></section>'''
@@ -301,13 +314,13 @@ def build_services():
 def build_sectors():
     body = hero("Secteurs", "Une comptabilité adaptée à votre secteur",
         "Les chiffres d’un entrepreneur en construction ne se lisent pas comme ceux d’un cabinet de services. Nous adaptons nos méthodes à la façon dont votre entreprise fonctionne.",
-        '<a class="btn btn-primary" href="{root}devenir-client/">Devenir client</a>', crumbs(("Accueil", "{root}"), ("Secteurs", "")))
+        '<a class="btn btn-primary" href="{root}devenir-client/">Devenir client</a>', crumbs(("Accueil", "{root}"), ("Secteurs", "")), img=P+"vieux-montreal.jpg")
     body += f'<section><div class="wrap"><div class="grid g3">{"".join(sec_card(s) for s in SECTORS)}</div></div></section>' + cta_band("Votre secteur n’est pas dans la liste ?", "Nous accompagnons des PME de tous les horizons. Parlons de votre réalité.")
     page("secteurs/index.html", "Secteurs desservis | Firma Plus", "Construction, immobilier, commerce, services professionnels, manufacturier et entreprises en croissance.", body, "secteurs")
     for s in SECTORS:
         body = hero("Secteur", s["title"], s["short"],
             f'<a class="btn btn-primary" href="{{root}}devenir-client/?secteur={s["slug"]}">Parler à un spécialiste</a>',
-            crumbs(("Accueil", "{root}"), ("Secteurs", "{root}secteurs/"), (s["title"], "")))
+            crumbs(("Accueil", "{root}"), ("Secteurs", "{root}secteurs/"), (s["title"], "")), img=P+s["img"]+".jpg")
         body += f'''<section><div class="wrap split">
 <div class="reveal"><span class="kicker">Vos enjeux</span><h2>Ce que nous voyons dans votre secteur</h2>
 <ul class="check" style="margin-top:20px">{"".join(f"<li>{i}</li>" for i in s["issues"])}</ul>
@@ -324,7 +337,7 @@ def build_team():
     body = hero("Notre équipe", "Notre équipe est là pour vous",
         "Une équipe de professionnels compétents, dynamiques et accessibles, qui met son savoir-faire au service des PME pour assurer une gestion financière optimale.",
         '<a class="btn btn-primary" href="{root}devenir-client/">Travailler avec nous</a><a class="btn btn-ghost" href="{root}carrieres/">Se joindre à l’équipe</a>',
-        crumbs(("Accueil", "{root}"), ("Équipe", "")))
+        crumbs(("Accueil", "{root}"), ("Équipe", "")), img=P+"equipe-bureau.jpg")
     body += f'''<section><div class="wrap"><div class="head"><span class="kicker">Associés</span><h2>La direction</h2></div>
 <div class="team">{partners}</div></div></section>
 <section class="alt"><div class="wrap"><div class="head"><span class="kicker">Professionnels</span><h2>Les personnes qui tiennent vos dossiers</h2></div>
@@ -333,7 +346,7 @@ def build_team():
     body += cta_band("Envie de faire partie de l’équipe ?", "Nous recrutons des techniciens comptables et des CPA dans nos trois points de service.").replace("{root}contact/", "{root}carrieres/").replace("Nous joindre", "Carrières")
     page("equipe/index.html", "Notre équipe | Firma Plus", "Associés, CPA, techniciens comptables et spécialistes de la certification de Firma Plus à Montréal, au Saguenay et à Saint-Eustache.", body, "equipe")
 
-    body = hero("Nos bureaux", "Trois points de service, une même rigueur", "Montréal, Saguenay et Saint-Eustache. Rencontrez-nous en personne ou à distance.", "", crumbs(("Accueil", "{root}"), ("Bureaux", "")))
+    body = hero("Nos bureaux", "Trois points de service, une même rigueur", "Montréal, Saguenay et Saint-Eustache. Rencontrez-nous en personne ou à distance.", "", crumbs(("Accueil", "{root}"), ("Bureaux", "")), img=P+"montreal-soir.jpg")
     body += f'<section><div class="wrap"><div class="grid g2">{"".join(office_card(o) for o in OFFICES)}</div></div></section>' + cta_band()
     page("bureaux/index.html", "Nos bureaux | Firma Plus", "Bureaux de Firma Plus à Montréal, au Saguenay (Jonquière) et à Saint-Eustache.", body)
 
@@ -344,7 +357,7 @@ def build_team():
         phones = "".join(f'<dt>{p[0]}</dt><dd><a href="tel:{p[2]}">{p[1]}</a></dd>' for p in o["phones"])
         addr = f'<dt>Adresse</dt><dd>{o["address"]}</dd>' if o["address"] else ""
         body = hero("Bureau", o["name"], o["entity"], f'<a class="btn btn-primary" href="{{root}}devenir-client/?bureau={o["slug"]}">Devenir client</a><a class="btn btn-ghost" href="tel:{o["phones"][0][2]}">Appeler</a>',
-            crumbs(("Accueil", "{root}"), ("Bureaux", "{root}bureaux/"), (o["name"], "")))
+            crumbs(("Accueil", "{root}"), ("Bureaux", "{root}bureaux/"), (o["name"], "")), img=P+o["img"]+".jpg")
         body += f'''<section><div class="wrap split"><div class="reveal"><h2>Nous joindre</h2><p class="muted" style="margin-top:12px">{o["blurb"]}</p>
 <div class="office"><dl>{phones}<dt>Courriel</dt><dd><a href="mailto:{o["email"]}">{o["email"]}</a></dd>{addr}</dl></div></div>
 <div class="panel reveal">{callback_form().replace(f'<option value="{o["slug"]}">', f'<option value="{o["slug"]}" selected>')}</div></div></section>
@@ -355,7 +368,7 @@ def build_team():
 def build_insights():
     cats = sorted(set(a["cat"] for a in ARTICLES))
     body = hero("Perspectives", "Conseils, échéances et analyses pour les dirigeants de PME",
-        "Fiscalité, paie, financement et gestion : ce que nos professionnels voient sur le terrain, expliqué simplement.", "", crumbs(("Accueil", "{root}"), ("Perspectives", "")))
+        "Fiscalité, paie, financement et gestion : ce que nos professionnels voient sur le terrain, expliqué simplement.", "", crumbs(("Accueil", "{root}"), ("Perspectives", "")), img=P+"analyse.jpg")
     body += f'''<section><div class="wrap">
 <div class="filters" data-target="#posts" role="group" aria-label="Filtrer par thème"><button class="on" data-f="all" type="button">Tous</button>{"".join(f'<button data-f="{c}" type="button">{c}</button>' for c in cats)}</div>
 <div class="grid g3" id="posts">{"".join(post_card(a).replace('class="card post reveal"', f'class="card post reveal" data-office="{a["cat"]}"') for a in ARTICLES)}</div></div></section>'''
@@ -365,7 +378,7 @@ def build_insights():
     for i, a in enumerate(ARTICLES):
         related = [x for x in ARTICLES if x["slug"] != a["slug"]][:3]
         schema = '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "Article", "headline": a["title"], "datePublished": a["date"], "author": {"@type": "Organization", "name": "Firma Plus"}, "publisher": {"@type": "Organization", "name": "Firma Plus"}, "description": a["excerpt"]}, ensure_ascii=False) + '</script>'
-        body = hero(a["cat"], a["title"], a["excerpt"], "", crumbs(("Accueil", "{root}"), ("Perspectives", "{root}perspectives/"), (a["cat"], "")),
+        body = hero(a["cat"], a["title"], a["excerpt"], "", crumbs(("Accueil", "{root}"), ("Perspectives", "{root}perspectives/"), (a["cat"], "")), img=P+a["img"]+".jpg",
             extra=f'<p class="meta" style="color:#c3d2e8;margin-top:18px"><time datetime="{a["date"]}">{a["date"]}</time> · {a["read"]} min de lecture · Firma Plus</p>')
         body += f'''<section><div class="wrap split"><article class="prose reveal">{a["body"]}
 <p class="muted" style="font-size:.82rem;margin-top:32px">Cet article est fourni à titre informatif et ne constitue pas un avis professionnel. Les règles fiscales évoluent : consultez un professionnel avant d’agir.</p></article>
@@ -377,7 +390,7 @@ def build_insights():
 def build_about():
     body = hero("À propos", "Nous sommes Firma Plus",
         "Une firme comptable fondée pour fournir aux PME des solutions comptables personnalisées, innovantes et de haute qualité, et ce, rapidement.",
-        '<a class="btn btn-primary" href="{root}equipe/">Rencontrer l’équipe</a>', crumbs(("Accueil", "{root}"), ("À propos", "")))
+        '<a class="btn btn-primary" href="{root}equipe/">Rencontrer l’équipe</a>', crumbs(("Accueil", "{root}"), ("À propos", "")), img=P+"vieux-montreal.jpg")
     body += f'''<section><div class="wrap split"><div class="prose reveal">
 <h2 style="margin-top:0">Notre mission</h2>
 <p>Chez Firma Plus, notre mission est d’alléger les charges administratives de nos clients, leur permettant ainsi de se concentrer pleinement sur la croissance de leur entreprise.</p>
@@ -390,6 +403,7 @@ def build_about():
 <h2>Nos entités</h2>
 <p><strong>Cabinet Firma Plus CPA Inc.</strong> dessert la clientèle de Montréal et du Saguenay. <strong>Cabinet Firma Plus Rive-Nord S.E.N.C.R.L.</strong> dessert la clientèle de Saint-Eustache et de la Rive-Nord.</p>
 </div><div class="reveal">
+<div class="photo wide" style="margin-bottom:26px">{photo("equipe-bureau", "L’équipe de Firma Plus en réunion")}</div>
 <div class="panel"><span class="kicker">En bref</span>
 <div class="stats" style="grid-template-columns:1fr 1fr;margin-top:10px;color:var(--ink)"><div class="stat"><b>3</b><span class="muted">points de service</span></div><div class="stat"><b>{N_PEOPLE}</b><span class="muted">professionnels</span></div><div class="stat"><b>2</b><span class="muted">cabinets</span></div><div class="stat"><b>6</b><span class="muted">services</span></div></div></div>
 <div class="quote" style="margin-top:30px">Fort de plus de vingt ans d’expérience en financement d’entreprises, Nicolas reconnaît l’importance d’un accès rapide aux informations financières.<cite>Nicolas Lessard, M.Sc. Fin., CPA — associé principal</cite></div>
@@ -405,7 +419,7 @@ def build_intake():
     sec = '<option value="">Choisir…</option>' + "".join(f'<option value="{s["slug"]}">{s["title"]}</option>' for s in SECTORS) + '<option value="autre">Autre</option>'
     body = hero("Devenir client", "Parlez-nous de votre entreprise",
         "Quelques questions pour bien comprendre vos besoins. Un spécialiste vous répond dans un délai d’un jour ouvrable avec une proposition ou une rencontre.",
-        "", crumbs(("Accueil", "{root}"), ("Devenir client", "")))
+        "", crumbs(("Accueil", "{root}"), ("Devenir client", "")), img=P+"signature.jpg")
     body += f'''<section><div class="wrap split"><div class="panel reveal">
 <form data-form="devenir-client" data-subject="Nouveau client potentiel" novalidate>
 <h3 style="margin-bottom:18px">1. Vos coordonnées</h3>
@@ -430,7 +444,7 @@ def build_intake():
 <button class="btn btn-primary" type="submit">Envoyer ma demande</button>
 <p class="form-msg" role="status"></p>
 </form></div>
-<div class="reveal"><span class="kicker">La suite</span><h2>Ce qui se passe ensuite</h2>
+<div class="reveal"><div class="photo wide" style="margin-bottom:28px">{photo("services-pro", "Une conseillère de Firma Plus avec une cliente")}</div><span class="kicker">La suite</span><h2>Ce qui se passe ensuite</h2>
 <div class="steps" style="grid-template-columns:1fr;margin-top:26px">
 <div class="step"><h3>Nous vous appelons</h3><p>Un spécialiste communique avec vous dans un délai d’un jour ouvrable.</p></div>
 <div class="step"><h3>Nous analysons</h3><p>Nous évaluons l’état de vos livres et vos échéances, sans engagement.</p></div>
@@ -442,7 +456,7 @@ def build_intake():
 def build_contact():
     body = hero("Nous joindre", "Contactez nos spécialistes",
         "Tenue de livres, paie, budgets et prévisions, déboursés bancaires ou tout autre besoin comptable : nous répondons avec professionnalisme et expertise.",
-        "", crumbs(("Accueil", "{root}"), ("Contact", "")))
+        "", crumbs(("Accueil", "{root}"), ("Contact", "")), img=P+"montreal-soir.jpg")
     body += f'''<section><div class="wrap split"><div class="panel reveal">
 <form data-form="contact" data-subject="Demande d’information" novalidate>
 <h3 style="margin-bottom:18px">Écrivez-nous</h3>
@@ -463,8 +477,9 @@ def build_contact():
 
 def build_careers():
     body = hero("Carrières", "Bâtissez votre carrière avec Firma Plus",
-        "Une équipe dynamique, un environnement stimulant et des outils actuels. Nous recrutons dans nos trois points de service.", "", crumbs(("Accueil", "{root}"), ("Carrières", "")))
+        "Une équipe dynamique, un environnement stimulant et des outils actuels. Nous recrutons dans nos trois points de service.", "", crumbs(("Accueil", "{root}"), ("Carrières", "")), img=P+"demarrage.jpg")
     body += f'''<section><div class="wrap split"><div class="reveal">
+<div class="photo wide" style="margin-bottom:28px">{photo("equipe-reunion", "Équipe de Firma Plus")}</div>
 <h2>Pourquoi nous joindre</h2>
 <ul class="check" style="margin-top:18px"><li>Des dossiers variés de PME de plusieurs secteurs</li><li>L’encadrement de CPA et un parcours de développement</li><li>Des outils infonuagiques et des processus modernes</li><li>Trois bureaux : Montréal, Saguenay et Saint-Eustache</li></ul>
 <h2 style="margin-top:40px">Profils recherchés</h2>

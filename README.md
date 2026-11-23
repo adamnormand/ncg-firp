@@ -1,4 +1,4 @@
-# ncg-fipl — firmaplus.ca
+# ncg-firp — firmaplus.ca
 
 Static rebuild of **firmaplus.ca** (Firma Plus, firme comptable pour PME), replacing the WordPress / JupiterX site. Same structure as the Kerson Wallaw rebuild: utility bar, mega-menus, services and industries, credentials-driven team, Perspectives (insights), and lead-generation forms on every key page. Hosted on GitHub Pages; no build step is needed to serve it.
 
@@ -37,12 +37,11 @@ Forms: `devenir-client` (intake), `rappel` (callback, on most pages), `contact`,
 
 ## Images to add
 
-The old site's images couldn't be pulled automatically. Drop these files in and they appear without any code change. Until then, the hero uses the brand gradient and team cards show initials.
+Team cards show initials until a portrait is added. Drop each photo in with the name below and it appears without any code change.
 
 | Image | Path |
 |---|---|
 | Original logo (replace the SVG redraw, or keep it) | `assets/img/logo.svg` |
-| Home hero photo (old `frima-plus-opt.jpg`) | `assets/img/hero.jpg` |
 | Nicolas Lessard | `assets/img/equipe/nicolas-lessard.jpg` |
 | Jérome Thibeault | `assets/img/equipe/jerome-thibeault.jpg` |
 | Yannick P-Michel | `assets/img/equipe/yannick-p-michel.jpg` |
@@ -75,6 +74,34 @@ The old site's images couldn't be pulled automatically. Drop these files in and 
 | Liliana Aguiar | `assets/img/equipe/liliana-aguiar.jpg` |
 | Félix Nadeau | `assets/img/equipe/felix-nadeau.jpg` |
 | Claude Nadeau | `assets/img/equipe/claude-nadeau.jpg` |
+
+## Stock photos
+
+`assets/img/photos/` holds 19 photos from Unsplash, used under the [Unsplash License](https://unsplash.com/license) (free commercial use, no attribution required). Each file is named after its use (`hero-montreal.jpg`, `construction.jpg`, etc.). Source IDs, for reference or replacement:
+
+| File | Unsplash image |
+|---|---|
+| hero-montreal | photo-1470181942237-78ce33fec141 |
+| montreal-soir | photo-1770488767269-9200cca087fa |
+| vieux-montreal | photo-1767290444122-5230a7fefef7 |
+| equipe-reunion | photo-1758518730083-4c12527b6742 |
+| equipe-bureau | photo-1758518731706-be5d5230e5a5 |
+| conseil-table | photo-1714974528737-3e6c7e4d11af |
+| signature | photo-1562564055-71e051d33c19 |
+| analyse | photo-1758519289074-9de36003622b |
+| calculatrice | photo-1709880945165-d2208c6ad2ec |
+| paie | photo-1772588627373-729b0f47e5bb |
+| graphiques | photo-1707157284454-553ef0a4ed0d |
+| commerce | photo-1556740758-90de374c12ad |
+| proprietaire | photo-1764173039192-2bbd508d5211 |
+| construction | photo-1742112125567-3e8967bad60f |
+| immobilier | photo-1624204386084-dd8c05e32226 |
+| manufacturier | photo-1581091212991-8891c7d4bd9b |
+| demarrage | photo-1522071820081-009f0129c71c |
+| services-pro | photo-1551836022-4c4c79ecde51 |
+| architecte | photo-1503387762-592deb58ef4e |
+
+To swap one, replace the file under the same name. Keep landscape images about 1200 px wide (1920 px for the hero).
 
 ## Open items for Firma Plus to confirm
 
